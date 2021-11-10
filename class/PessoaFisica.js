@@ -9,7 +9,10 @@ class PessoaFisica{
     }
 
     save(){
-        console.log('Save inside Database');
+        return {
+            query: "INSERT INTO PessoaFisica (CPF,Nome,Telefone,Endereco) VALUES (?, ?, ?, ?)",
+            dados: [this.CPF, this.Nome, this.Telefone, this.Endereco]
+         };
     }
 
     toObject(){
@@ -28,3 +31,5 @@ class PessoaFisica{
         };
     }
 }
+
+module.exports = PessoaFisica;

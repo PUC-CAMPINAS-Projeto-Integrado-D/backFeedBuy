@@ -1,6 +1,6 @@
 class Usuario{
 
-    constructor({ID : null, Email : null, Senha : null, Nome : null, Cargo : null}){
+    constructor({ID = null, Email = null, Senha = null, Nome = null, Cargo = 'COMPRADOR'}){
       this.ID = ID;
       this.Email = Email;
       this.Senha = Senha;
@@ -11,9 +11,8 @@ class Usuario{
     }
 
     save(){
-        console.log('Save inside Database');
         return {
-            query: "INSERT INTO Usuario (ID, Email, Senha, Nome, Cargo) VALUES(?, ?, ?, ?, ?)",
+            query: "INSERT INTO Usuario (Email, Senha, Nome, Cargo) VALUES(?, ?, ?, ?)",
             dados: [this.Email, this.Senha, this.Nome, this.Cargo]
          };
       }
@@ -52,3 +51,5 @@ class Usuario{
         };
     }
 }
+
+module.exports = Usuario;

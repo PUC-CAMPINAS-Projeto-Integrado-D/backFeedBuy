@@ -104,4 +104,26 @@ class Validate {
         if([undefined, null].includes(value)) return false;
         return String(value).match(/\s/g).length >= 1;
     }
+
+    static isEmpty(value){
+        if([undefined, null, ''].includes(value)) return false;
+        return true;
+    }
+
+    static hasProperties(value, properties = []){
+        if([undefined, null, ''].includes(value)) return properties;
+
+        const notFound = [];
+
+        for(const item of properties){
+            if(value[item] == undefined){
+                notFound.push(item);
+            }
+        }
+        if(notFound.length > 0) return notFound;
+
+        return true;
+    }
 }
+
+module.exports = Validate;

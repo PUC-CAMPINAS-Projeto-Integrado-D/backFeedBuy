@@ -1,10 +1,37 @@
-async function connect(){
-    if(global.connection && global.connection.state !== 'disconnected')
-        return global.connection;
+const mysql = require('mysql');
+let connection = null;
 
-    const mysql = require("mysql2/promise");
-    const connection = await mysql.createConnection("mysql://anunci87_feedbuy:1.~;nMTj{AW]a;f(JN@162.241.2.146:3306/anunci87_feedbuy");
-    console.log("Conectou no MySQL!");
-    global.connection = connection;
-    return connection;
+async function connect(){
+
+    connection = mysql.createConnection({
+      host     : '162.241.2.146',
+      user     : 'anunci87_feedbuy',
+      password : '1.~;nMTj{AW]a;f(JN',
+      database: 'anunci87_feedbuy',
+    });
+    connection.connect();
+    return;
+}
+
+function query(query, binds, callback = (rows, fields) => {}){
+    return new Promise((resolve, reject)=>{
+        connection.query(query, binds, async (err, rows, fields) => {
+            if (err) return reject(err);
+
+            callback(rows, fields);
+            return resolve({rows, fields});
+        });
+    })
+}
+
+async function disconnect(){
+    if(connection === null) return;
+
+    connection.end();
+}
+
+connect();
+
+module.exports = {
+    query
 }

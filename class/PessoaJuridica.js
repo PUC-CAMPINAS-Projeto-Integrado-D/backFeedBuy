@@ -1,6 +1,6 @@
 class PessoaJuridica{
 
-    constructor({ID : null, RazaoSocial : null, NomeFantasia : null, CNPJ : null, Telefone : null, Endereco : null}){
+    constructor({ID = null, RazaoSocial = null, NomeFantasia = null, CNPJ = null, Telefone = null, Endereco = null}){
       this.ID = ID;
       this.RazaoSocial = RazaoSocial;
       this.NomeFantasia = NomeFantasia;
