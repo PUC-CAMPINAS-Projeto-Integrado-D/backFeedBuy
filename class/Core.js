@@ -1,4 +1,5 @@
 const express = require('express');
+const timeout = require('connect-timeout');
 const controller = require('./Controller.js');
 const bodyParser = require('body-parser');
 
@@ -18,13 +19,14 @@ function setRoutes () {
     // Routes Private
     routerPrivate .get    ('/routes', controller.onRoutes);
 
-    // User
-    routerPrivate .get    ('/user', controller.onStandardRoute);
-    routerPrivate .get    ('/user/:id', controller.onStandardRoute);
+    // Users Private
+    routerPrivate .get    ('/user', controller.onGetUser);
+    routerPrivate .get    ('/user/:id', controller.onGetUserByID);
     routerPrivate .post   ('/user/:id', controller.onStandardRoute);
     routerPrivate .put    ('/user/:id', controller.onStandardRoute);
     routerPrivate .delete ('/user/:id', controller.onStandardRoute);
 
+    // Ad Private
     routerPrivate .get    ('/ad', controller.onStandardRoute);
     routerPrivate .get    ('/ad/:id', controller.onStandardRoute);
     routerPrivate .post   ('/ad/:id', controller.onStandardRoute);
@@ -32,16 +34,18 @@ function setRoutes () {
     routerPrivate .delete ('/ad/:id', controller.onStandardRoute);
 
     // Routes Public
-    routerPublic .post    ('/login', controller.onStandardRoute);
+    routerPublic .post    ('/login', controller.onLogin);
     routerPublic .post    ('/register', controller.onRegister);
 
     // Permissions
-    routerV1 .use        ('/signed', routerPrivate);
+    routerV1 .use        ('/private', routerPrivate);
     routerV1 .use        ('/public', routerPublic);
 
-    // Version
-    app.use(jsonParser);
+    // Versions
+    app.use(jsonParser); // JSON Body
+
     app.use('/v1', routerV1);
+
 
     // Listen
     app.listen(port, controller.onListenRoute);

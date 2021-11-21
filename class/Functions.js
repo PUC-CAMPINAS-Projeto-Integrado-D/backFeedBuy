@@ -14,12 +14,12 @@ function returnJSON400(res, {message, required, notSent, example}){
     }, status: httpCode});
 }
 
-function hashPassword(password) {
-    return bcrypt.hashSync(password, 10);
+async function hashPassword(password) {
+    return bcrypt.hash(password, 10);
 }
 
-function isPasswordCorrect(passwordAttempt, hash) {
-    return bcrypt.compareSync(passwordAttempt, hash);
+async function isPasswordCorrect(passwordAttempt, hash) {
+    return bcrypt.compare(passwordAttempt, hash);
 }
 
 module.exports = {
