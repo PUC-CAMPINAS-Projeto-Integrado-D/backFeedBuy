@@ -1,27 +1,32 @@
 class Produto{
 
-    constructor({ID : null, Marca : null){
-      this.ID = ID;
-      this.Marca = Marca;
+    constructor({ID = null, Marca = null}){
+        this.ID = ID;
+        this.Marca = Marca;
 
-      return this;
+        return this;
     }
 
     save(){
-        console.log('Save inside Database');
         return {
-            query: "INSERT INTO Produto(ID, Marca) VALUES(?, ?)",
+            query: "INSERT INTO Produto(Marca) VALUES(UPPER(?)) ON DUPLICATE KEY UPDATE Marca = Marca",
             dados: [this.Marca]
-         };
-      }
+        };
+    }
 
     delete(){
-            console.log('Save inside Database');
-            return {
-                query: "DELETE FROM Produto WHERE ID = ?",
-                dados: [this.ID]
-            };
-      }
+        return {
+            query: "DELETE FROM Produto WHERE ID = ?",
+            dados: [this.ID]
+        };
+    }
+
+    getByMarca(){
+        return {
+            query: "SELECT * FROM Produto WHERE MARCA LIKE UPPER(?)",
+            dados: [this.Marca]
+        };
+    }
 
     toObject(){
         const ID = this.ID;
@@ -33,3 +38,5 @@ class Produto{
         };
     }
 }
+
+module.exports = Produto;

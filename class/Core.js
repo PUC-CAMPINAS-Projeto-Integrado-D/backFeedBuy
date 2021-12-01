@@ -1,6 +1,5 @@
 const express = require('express');
 const timeout = require('connect-timeout');
-const controller = require('./Controller.js');
 const bodyParser = require('body-parser');
 
 const port = 3000;
@@ -11,50 +10,67 @@ const routerV1 = express.Router();
 const routerPublic = express.Router();
 const routerPrivate = express.Router();
 
-function setRoutes () {
+// Auth
+const onMiddleware = require('../controllers/auth/onMiddleware.js');
+const onLogin = require('../controllers/auth/onLogin.js');
+const onRegister = require('../controllers/auth/onRegister.js');
 
-    // Middlewares
-    routerPrivate .use       (controller.onMiddleware);
+const onListenRoute = require('../controllers/auth/onListenRoute.js');
+const onStandardRoute = require('../controllers/auth/onStandardRoute.js');
+const onRoutes = require('../controllers/auth/onRoutes.js');
 
-    // Routes Private
-    routerPrivate .get    ('/routes', controller.onRoutes);
+// Users
+const onDeleteUser = require('../controllers/users/onDeleteUser.js');
+const onUpdateUserByID = require('../controllers/users/onUpdateUserByID.js');
+const onGetUser = require('../controllers/users/onGetUser.js');
+const onGetUserByID = require('../controllers/users/onGetUserByID.js');
 
-    // Users Private
-    routerPrivate .get    ('/user', controller.onGetUser);
-    routerPrivate .get    ('/user/:id', controller.onGetUserByID);
-    routerPrivate .post   ('/user/:id', controller.onStandardRoute);
-    routerPrivate .put    ('/user/:id', controller.onStandardRoute);
-    routerPrivate .delete ('/user/:id', controller.onStandardRoute);
+// Ads
+const onGetAds = require('../controllers/ads/onGetAds.js');
+const onAddAd = require('../controllers/ads/onAddAd.js');
 
-    // Ad Private
-    routerPrivate .get    ('/ad', controller.onStandardRoute);
-    routerPrivate .get    ('/ad/:id', controller.onStandardRoute);
-    routerPrivate .post   ('/ad/:id', controller.onStandardRoute);
-    routerPrivate .put    ('/ad/:id', controller.onStandardRoute);
-    routerPrivate .delete ('/ad/:id', controller.onStandardRoute);
+function setRoutes() {
+  // Middlewares
+  routerPrivate.use(onMiddleware);
 
-    // Routes Public
-    routerPublic .post    ('/login', controller.onLogin);
-    routerPublic .post    ('/register', controller.onRegister);
+  // Routes Private
+  routerPrivate.get('/routes', onRoutes);
 
-    // Permissions
-    routerV1 .use        ('/private', routerPrivate);
-    routerV1 .use        ('/public', routerPublic);
+  // Users Private
+  routerPrivate.delete('/user', onDeleteUser);
+  routerPrivate.patch('/user', onUpdateUserByID);
+  routerPrivate.get('/user', onGetUser);
+  routerPrivate.get('/user/:id', onGetUserByID);
 
-    // Versions
-    app.use(jsonParser); // JSON Body
+  // Ad
+  routerPrivate.post('/ad', onAddAd);
+  routerPrivate.patch('/ad/:id', onStandardRoute);
+  routerPrivate.delete('/ad/:id', onStandardRoute);
 
-    app.use('/v1', routerV1);
+  routerPublic.get('/ad/:id', onStandardRoute);
+  routerPublic.get('/ad', onGetAds);
 
+  // Routes Public
+  routerPublic.post('/login', onLogin);
+  routerPublic.post('/register', onRegister);
 
-    // Listen
-    app.listen(port, controller.onListenRoute);
+  // Permissions
+  routerV1.use('/private', routerPrivate);
+  routerV1.use('/public', routerPublic);
+
+  // Versions
+  app.use(jsonParser); // JSON Body
+
+  app.use('/v1', routerV1);
+
+  // Listen
+  app.listen(port, onListenRoute);
 }
 
 function main() {
-    setRoutes();
+  setRoutes();
 }
 
 module.exports = {
-    main
-}
+  main,
+};

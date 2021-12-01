@@ -11,8 +11,7 @@
     },
     "rules": {
         "no-console": "off",
-        "no-var": 0,
-        
+        "no-var": 0        
     }
 
 }

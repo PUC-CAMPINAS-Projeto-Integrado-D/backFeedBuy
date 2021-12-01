@@ -1,63 +1,75 @@
-class Anuncio{
-    constructor({ID = null, Descricao = null, Preco = null, Marca = null, Anunciante = null}){
+class Anuncio {
+  constructor({
+    ID = null, Descricao = null, Preco = null, Marca = null, Anunciante = null,
+  }) {
+    this.ID = ID;
+    this.Descricao = Descricao;
+    this.Preco = Preco;
+    this.Marca = Marca;
+    this.Anunciante = Anunciante;
 
-        this.ID = ID;
-        this.Descricao = Descricao;
-        this.Preco = Preco;
-        this.Marca = Marca;
-        this.Anunciante = Anunciante;
+    return this;
+  }
 
-        return this;
-    }
+  update() {
+    return {
+      query: 'UPDATE Anuncio SET Descricao = ?, Preco = ?, Marca = ?, Anunciante = ? WHERE ID = ?',
+      dados: [
+        this.ID,
+        this.Descricao,
+        this.Preco,
+        this.Marca,
+        this.Anunciante,
+      ],
+    };
+  }
 
-    update(){
-        console.log('Save inside Database');
-        return {
-            query: "UPDATE Anuncio SET Descricao = ?, Preco = ?, Marca = ?, Anunciante = ? WHERE ID = ?",
-            dados: [
-                this.ID,
-                this.Descricao,
-                this.Preco,
-                this.Marca,
-                this.Anunciante
-            ]
-        };
-    }
+  delete() {
+    return {
+      query: 'DELETE FROM Anuncio WHERE ID = ?',
+      dados: [this.ID],
+    };
+  }
 
-    delete(){
-        console.log('Save inside Database');
-        return {
-            query: "DELETE FROM Anuncio WHERE ID = ?",
-            dados: [this.ID]
-        };
-    }
+  save() {
+    return {
+      query: 'INSERT INTO Anuncio (Descricao, Preco, Marca, Anunciante) VALUES (?, ?, ?, ?)',
+      dados: [
+        this.Descricao,
+        this.Preco,
+        this.Marca,
+        this.Anunciante,
+      ],
+    };
+  }
 
-    save(){
-        console.log('Save inside Database');
-        return {
-            query: "INSERT INTO Anuncio (Descricao, Preco, Marca, Anunciante) VALUES (?, ?, ?, ?)",
-            dados: [
-                this.Descricao,
-                this.Preco,
-                this.Marca,
-                this.Anunciante
-            ]
-        };
-    }
+  getAll() {
+    return {
+      query: 'INSERT INTO Anuncio (Descricao, Preco, Marca, Anunciante) VALUES (?, ?, ?, ?)',
+      dados: [
+        this.Descricao,
+        this.Preco,
+        this.Marca,
+        this.Anunciante,
+      ],
+    };
+  }
 
-    toObject(){
-        ID = this.ID;
-        Descricao = this.Descricao;
-        Preco = this.Preco;
-        Marca = this.Marca;
-        Anunciante = this.Anunciante;
+  toObject() {
+    ID = this.ID;
+    Descricao = this.Descricao;
+    Preco = this.Preco;
+    Marca = this.Marca;
+    Anunciante = this.Anunciante;
 
-        return {
-            ID,
-            Descricao,
-            Preco,
-            Marca,
-            Anunciante,
-        };
-    }
+    return {
+      ID,
+      Descricao,
+      Preco,
+      Marca,
+      Anunciante,
+    };
+  }
 }
+
+module.exports = Anuncio;
