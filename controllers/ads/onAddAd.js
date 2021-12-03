@@ -64,7 +64,9 @@ module.exports = async function onAddAd(req, res) {
 
         mysqlDB.disconnect();
 
-        return CoreLib.returnJSON(res, {}, 201);
+        return CoreLib.returnJSON(res, {
+          message: 'New user registered',
+        }, 201);
     } catch (er) {
         mysqlDB.disconnect();
 

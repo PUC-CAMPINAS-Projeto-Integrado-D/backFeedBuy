@@ -28,6 +28,7 @@ const onGetUserByID = require('../controllers/users/onGetUserByID.js');
 // Ads
 const onGetAds = require('../controllers/ads/onGetAds.js');
 const onAddAd = require('../controllers/ads/onAddAd.js');
+const onGetAd = require('../controllers/ads/onGetAd.js');
 
 function setRoutes() {
   // Middlewares
@@ -48,7 +49,7 @@ function setRoutes() {
   routerPrivate.delete('/ad/:id', onStandardRoute);
 
   routerPublic.get('/ad/:id', onStandardRoute);
-  routerPublic.get('/ad', onGetAds);
+  routerPublic.get('/ad', onGetAd);
 
   // Routes Public
   routerPublic.post('/login', onLogin);

@@ -1,12 +1,12 @@
 class Anuncio {
-  constructor({
-    ID = null, Descricao = null, Preco = null, Marca = null, Anunciante = null,
-  }) {
+  constructor({ID = null, Descricao = null, Preco = null, Marca = null, Anunciante = null, Limit = 50, Page = 1}) {
     this.ID = ID;
     this.Descricao = Descricao;
     this.Preco = Preco;
     this.Marca = Marca;
     this.Anunciante = Anunciante;
+    this.Limit = Limit;
+    this.Page = Page;
 
     return this;
   }
@@ -53,6 +53,23 @@ class Anuncio {
         this.Anunciante,
       ],
     };
+  }
+
+  getListWithBrand(){
+      return {
+        query: 'SELECT Anuncio.ID, Anuncio.Descricao, Anuncio.Preco FROM Anuncio LEFT JOIN Produto ON Produto.ID = Anuncio.Marca LIMIT ?, ?',
+        dados: [
+          this.Page,
+          this.Limit
+        ],
+      };
+  }
+
+  getCountTotal(){
+      return {
+        query: 'SELECT COUNT(*) as Total FROM Anuncio',
+        dados: [],
+      };
   }
 
   toObject() {

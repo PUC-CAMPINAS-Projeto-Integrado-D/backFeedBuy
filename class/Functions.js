@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
-function returnJSON(res, objectJSON = {}, httpCode = 200) {
-  return res.status(httpCode).json({ data: objectJSON, status: httpCode });
+function returnJSON(res, objectJSON = {}, httpCode = 200, metadata = undefined) {
+  return res.status(httpCode).json({ data: objectJSON, status: httpCode, metadata});
 }
 
 function returnJSON400(res, {
