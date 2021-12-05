@@ -1,43 +1,43 @@
-class Hashtag{
+class HashTag {
+  constructor({ ID = null, Hashtag = null }) {
+    this.ID = ID;
+    this.Hashtag = Hashtag;
 
-    constructor({ID : null, Hashtag : null}){
-      this.ID = ID;
-      this.Hashtag = Hashtag;
+    return this;
+  }
 
-      return this;
-    }
+  save() {
+    console.log('Save inside Database');
+    return {
+      query: 'INSERT INTO Hashtag(Hashtag) VALUES ? ON DUPLICATE KEY UPDATE Hashtag = Hashtag',
+      dados: [this.Hashtag],
+    };
+  }
 
-    save(){
-        console.log('Save inside Database');
-        return {
-            query: "INSERT INTO Hashtag(ID, Hashtag) VALUES(?, ?)",
-            dados: [this.Hashtag]
-         };
-      }
+  update() {
+    console.log('Save inside Database');
+    return {
+      query: 'UPDATE Mensagem SET Hashtag = ? WHERE ID = ?',
+      dados: [this.Hashtag],
+    };
+  }
 
-    update(){
-          console.log('Save inside Database');
-          return {
-              query: "UPDATE Mensagem SET Hashtag = ?WHERE ID = ?",
-              dados: [this.Hashtag]
-            };
-      }
+  delete() {
+    console.log('Save inside Database');
+    return {
+      query: 'DELETE FROM MensagemWHERE ID = ?',
+      dados: [this.ID],
+    };
+  }
 
-    delete(){
-            console.log('Save inside Database');
-            return {
-                query: "DELETE FROM MensagemWHERE ID = ?",
-                dados: [this.ID]
-            };
-      }
+  toObject() {
+    const { ID } = this;
+    const { Hashtag } = this;
 
-    toObject(){
-        const ID = this.ID;
-        const Hashtag = this.Hashtag;
-
-        return {
-            ID,
-            Hashtag,
-        };
-    }
+    return {
+      ID,
+      Hashtag,
+    };
+  }
 }
+module.exports = HashTag;

@@ -30,7 +30,7 @@ class AssuntosAnuncio {
   save() {
     console.log('Save inside Database');
     return {
-      query: 'INSERT INTO AssuntosAnuncio (Anuncio, Hashtag) VALUES (?,?)',
+      query: 'INSERT INTO AssuntosAnuncio (Anuncio, Hashtag) SELECT ? Anuncio, ID FROM Hashtag WHERE Hashtag IN (?)',
       dados: [this.Anuncio, this.Hashtag],
     };
   }
@@ -47,3 +47,5 @@ class AssuntosAnuncio {
     };
   }
 }
+
+module.exports = AssuntosAnuncio;

@@ -2,7 +2,7 @@ const express = require('express');
 const timeout = require('connect-timeout');
 const bodyParser = require('body-parser');
 
-const port = 3000;
+const port = 3001;
 const app = express();
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -26,9 +26,9 @@ const onGetUser = require('../controllers/users/onGetUser.js');
 const onGetUserByID = require('../controllers/users/onGetUserByID.js');
 
 // Ads
-const onGetAds = require('../controllers/ads/onGetAds.js');
 const onAddAd = require('../controllers/ads/onAddAd.js');
 const onGetAd = require('../controllers/ads/onGetAd.js');
+const onDeleteAd = require('../controllers/ads/onDeleteAd.js');
 
 function setRoutes() {
   // Middlewares
@@ -46,7 +46,7 @@ function setRoutes() {
   // Ad
   routerPrivate.post('/ad', onAddAd);
   routerPrivate.patch('/ad/:id', onStandardRoute);
-  routerPrivate.delete('/ad/:id', onStandardRoute);
+  routerPrivate.delete('/ad/:id', onDeleteAd);
 
   routerPublic.get('/ad/:id', onStandardRoute);
   routerPublic.get('/ad', onGetAd);
