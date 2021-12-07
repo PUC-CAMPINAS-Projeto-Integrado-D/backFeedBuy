@@ -41,6 +41,7 @@ const onAddAddress = require('../controllers/address/onAddAddress.js');
 // Media
 const onAddMedia = require('../controllers/medias/onAddMedia.js');
 const onDeleteMedia = require('../controllers/medias/onDeleteMedia.js');
+const onGetMedia = require('../controllers/medias/onGetMedia.js');
 
 function setRoutes() {
   // Middlewares
@@ -66,6 +67,8 @@ function setRoutes() {
   // Media
   routerPrivate.delete('/media', upload.single('media'), onDeleteMedia);
   routerPrivate.put('/media', upload.single('media'), onAddMedia);
+
+  routerPublic.get('/media/:id', onGetMedia);
 
   // Buy
   routerPrivate.post('/buy', onBuy);

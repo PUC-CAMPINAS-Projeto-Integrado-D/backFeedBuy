@@ -46,7 +46,7 @@ module.exports = async function onAddMedia(req, res) {
         console.error(ex);
     }
 
-    const regex = new RegExp(userData.ID+'\.[^ ]+$');
+    const regex = new RegExp('^'+routesParam.id+'\\.[^ ]+$');
     fs.readdirSync(pathFile)
         .filter(f => regex.test(f))
         .map(f => fs.unlinkSync(pathFile + f))
