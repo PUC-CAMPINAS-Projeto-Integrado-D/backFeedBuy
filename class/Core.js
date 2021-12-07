@@ -3,9 +3,11 @@ const express = require('express');
 const timeout = require('connect-timeout');
 const bodyParser = require('body-parser');
 const upload = multer({ dest: 'uploads/' });
-
+const cors = require('cors');
 const port = 3001;
 const app = express();
+app.use(cors());
+app.options('*', cors());
 const routerV1 = express.Router();
 const routerPublic = express.Router();
 const routerPrivate = express.Router();
@@ -84,7 +86,6 @@ function setRoutes() {
   app.use(bodyParser.json()); // JSON Body
 
   app.use('/v1', routerV1);
-
   // Listen
   app.listen(port, onListenRoute);
 }

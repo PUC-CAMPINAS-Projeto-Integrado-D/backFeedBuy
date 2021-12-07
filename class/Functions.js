@@ -2,6 +2,9 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 
 function returnJSON(res, objectJSON = {}, httpCode = 200, metadata = undefined) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   return res.status(httpCode).json({ data: objectJSON, status: httpCode, metadata });
 }
 
@@ -9,6 +12,9 @@ function returnJSON400(res, {
   message, required, notSent, example,
 }) {
   const httpCode = 400;
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
   return res.status(httpCode).json({
     data: {
       message,
