@@ -1,11 +1,11 @@
+const multer  = require('multer');
 const express = require('express');
 const timeout = require('connect-timeout');
 const bodyParser = require('body-parser');
+const upload = multer({ dest: 'uploads/' });
 
 const port = 3001;
 const app = express();
-const jsonParser = bodyParser.json();
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const routerV1 = express.Router();
 const routerPublic = express.Router();
 const routerPrivate = express.Router();
@@ -30,6 +30,16 @@ const onAddAd = require('../controllers/ads/onAddAd.js');
 const onGetAd = require('../controllers/ads/onGetAd.js');
 const onDeleteAd = require('../controllers/ads/onDeleteAd.js');
 
+// Buy
+const onBuy = require('../controllers/buy/onBuy.js');
+
+// Address
+const onAddAddress = require('../controllers/address/onAddAddress.js');
+
+// Media
+const onAddMedia = require('../controllers/medias/onAddMedia.js');
+const onDeleteMedia = require('../controllers/medias/onDeleteMedia.js');
+
 function setRoutes() {
   // Middlewares
   routerPrivate.use(onMiddleware);
@@ -51,7 +61,17 @@ function setRoutes() {
   routerPublic.get('/ad/:id', onStandardRoute);
   routerPublic.get('/ad', onGetAd);
 
-  // Routes Public
+  // Media
+  routerPrivate.delete('/media', upload.single('media'), onDeleteMedia);
+  routerPrivate.put('/media', upload.single('media'), onAddMedia);
+
+  // Buy
+  routerPrivate.post('/buy', onBuy);
+
+  // Address
+  routerPrivate.post('/address', onAddAddress);
+
+  // Auth routes
   routerPublic.post('/login', onLogin);
   routerPublic.post('/register', onRegister);
 
@@ -60,7 +80,8 @@ function setRoutes() {
   routerV1.use('/public', routerPublic);
 
   // Versions
-  app.use(jsonParser); // JSON Body
+  app.use(bodyParser.urlencoded({ extended: false })); // URLEncoded Body
+  app.use(bodyParser.json()); // JSON Body
 
   app.use('/v1', routerV1);
 

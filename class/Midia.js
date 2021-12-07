@@ -1,6 +1,8 @@
+const path = require('path');
+
 class Midia{
 
-    constructor({ID : null, Link : null, NomeArquivo : null}){
+    constructor({ID = null, Link = null, NomeArquivo = null}){
       this.ID = ID;
       this.Link = Link;
       this.NomeArquivo = NomeArquivo;
@@ -11,8 +13,8 @@ class Midia{
     save(){
         console.log('Save inside Database');
         return {
-            query: "INSERT INTO Midia(ID, Link, NomeArquivo) VALUES(?, ?, ?)",
-            dados: [this.Link, this.NomeArquivo]
+            query: "DELETE FROM Midia WHERE Link LIKE ?; INSERT INTO Midia(Link, NomeArquivo) VALUES(?, ?) ON DUPLICATE KEY UPDATE Link = Link",
+            dados: [`${path.parse(this.Link).name}.%`, this.Link, this.NomeArquivo]
          };
       }
 
@@ -44,3 +46,5 @@ class Midia{
         };
     }
 }
+
+module.exports = Midia;

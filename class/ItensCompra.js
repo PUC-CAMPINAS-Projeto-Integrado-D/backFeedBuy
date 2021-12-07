@@ -12,17 +12,16 @@ class ItensCompra {
 
     save() {
         return {
-            query: 'INSERT INTO ItensCompra (Anuncio, Valor, Quantidade, Compra) VALUES ( ?, ?, ?, ? )',
+            query: 'INSERT INTO ItensCompra (Anuncio, Valor, Quantidade, Compra) VALUES ?',
             dados: [
-                ID,
-                Anuncio,
-                Valor,
-                Quantidade,
-                Compra,
+                this.Anuncio,
+                this.Valor,
+                this.Quantidade,
+                this.Compra,
             ],
         };
     }
 
 }
 
-module.exports = Compra;
+module.exports = ItensCompra;

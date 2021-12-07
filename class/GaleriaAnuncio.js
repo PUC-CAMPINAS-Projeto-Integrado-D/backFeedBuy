@@ -22,7 +22,7 @@ class GaleriaAnuncio {
   save() {
     console.log('Save inside Database');
     return {
-      query: 'INSERT INTO GaleriaAnuncio (Midia, Anuncio) VALUES (?, ?)',
+      query: 'INSERT INTO GaleriaAnuncio (Midia, Anuncio) VALUES (?, ?) ON DUPLICATE KEY UPDATE Midia = Midia',
       dados: [this.Midia, this.Anuncio],
     };
   }
@@ -39,3 +39,5 @@ class GaleriaAnuncio {
     };
   }
 }
+
+module.exports = GaleriaAnuncio;
