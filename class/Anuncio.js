@@ -62,7 +62,8 @@ class Anuncio {
       query: `SELECT
                 Anuncio.ID,
                 Anuncio.Descricao,
-                Anuncio.Preco
+                Anuncio.Preco,
+                Produto.Marca as Descricao
             FROM Anuncio
             LEFT JOIN Produto ON Produto.ID = Anuncio.Marca
             ORDER BY Anuncio.Cadastrado DESC
