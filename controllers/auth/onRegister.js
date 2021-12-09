@@ -96,7 +96,7 @@ module.exports = async function onRegister(req, res) {
     Email: userData.Email,
     Senha: senhaCriptografada,
     Nome: userData.Usuario,
-    Cargo: isCPF ? 'ANUNCIANTE' : 'COMPRADOR'
+    Cargo: isCNPJ ? 'ANUNCIANTE' : 'COMPRADOR'
   });
 
   const pessoaFisicaDB = pessoaFisica.save();
