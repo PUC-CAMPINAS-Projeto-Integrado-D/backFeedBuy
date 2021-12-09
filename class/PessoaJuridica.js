@@ -15,7 +15,7 @@ class PessoaJuridica {
   save() {
     console.log('Save inside Database');
     return {
-      query: 'INSERT INTO PessoaJuridica (ID, RazaoSocial, NomeFantasia, CNPJ, Telefone, Endereco) VALUES(?, ?, ?, ?, ?, ?)',
+      query: 'INSERT INTO PessoaJuridica (RazaoSocial, NomeFantasia, CNPJ, Telefone, Endereco) VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE CNPJ = CNPJ',
       dados: [this.RazaoSocial, this.NomeFantasia, this.CNPJ, this.Telefone, this.Endereco],
     };
   }
@@ -54,3 +54,5 @@ class PessoaJuridica {
     };
   }
 }
+
+module.exports = PessoaJuridica;

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 
+const axios = require('axios');
 const fsPromises = fs.promises;
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -8,6 +9,7 @@ const CoreLib = require('../../class/Functions.js');
 const Validate = require('../../class/Validate.js');
 const MySQL = require('../../class/BD.js');
 const PessoaFisica = require('../../class/PessoaFisica.js');
+const PessoaJuridica = require('../../class/PessoaJuridica.js');
 const Usuario = require('../../class/Usuario.js');
 
 const { secretHMAC } = process.env;
@@ -44,12 +46,52 @@ module.exports = async function onRegister(req, res) {
   }
 
   const senhaCriptografada = await CoreLib.hashPassword(senha);
+  const isCPF = Validate.isCPF(userData.Documento);
+  const isCNPJ = Validate.isCNPJ(userData.Documento);
+
+  const mysqlDB = new MySQL();
 
   const pessoaFisica = new PessoaFisica({
-    CPF: userData.Documento,
-    Nome: userData.Nome,
-    Telefone: userData.Fone,
+      CPF: userData.Documento,
+      Nome: userData.Nome,
+      Telefone: userData.Fone,
   });
+
+  if(isCPF){} else if(isCNPJ){
+      const requestPromise = ()=>{
+          return new Promise((resolve, reject)=>{
+              axios.get('https://www.receitaws.com.br/v1/cnpj/'+userData.Documento.replace(/[^0-9]+/g, ""))
+              .then(function (response) {
+                  resolve(response);
+              })
+              .catch(function (error) {
+                  reject(response);
+              })
+            })
+      };
+          try{
+              const promiseResult = (await requestPromise()).data;
+              console.log(promiseResult);
+              const pessoaJuridica = new PessoaJuridica({
+                  RazaoSocial: promiseResult.nome,
+                  NomeFantasia: promiseResult.fantasia,
+                  CNPJ: userData.Documento.replace(/[^0-9]+/g, ""),
+                  Telefone: promiseResult.telefone
+              });
+              const savePJ = pessoaJuridica.save();
+              await mysqlDB.query(savePJ.query, savePJ.dados);
+          }catch(ex){
+              console.error(ex);
+          }
+
+  } else {
+      return CoreLib.returnJSON(res, {
+        message: 'Invalid document!',
+        isCPF,
+        isCNPJ
+    }, 406);
+  }
+
   const usuario = new Usuario({
     Email: userData.Email,
     Senha: senhaCriptografada,
@@ -59,7 +101,6 @@ module.exports = async function onRegister(req, res) {
   const pessoaFisicaDB = pessoaFisica.save();
   const usuarioDB = usuario.save();
 
-  const mysqlDB = new MySQL();
   try {
     await mysqlDB.connect();
     await mysqlDB.query(usuarioDB.query, usuarioDB.dados);
