@@ -61,7 +61,7 @@ class Anuncio {
     return {
       query: `SELECT
                 Anuncio.ID,
-                Anuncio.Descricao,
+                Anuncio.Descricao as Obs,
                 Anuncio.Preco,
                 Produto.Marca as Descricao
             FROM Anuncio
