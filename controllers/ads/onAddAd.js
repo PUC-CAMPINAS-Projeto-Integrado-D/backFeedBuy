@@ -84,6 +84,7 @@ module.exports = async function onAddAd(req, res) {
 
     return CoreLib.returnJSON(res, {
       message: 'Ad registered',
+      ID: adId
     }, 201);
   } catch (er) {
     mysqlDB.disconnect();

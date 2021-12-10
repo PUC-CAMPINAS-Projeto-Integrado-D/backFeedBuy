@@ -20,7 +20,7 @@ module.exports = async function onAddMedia(req, res) {
     const validatedData = Validate.hasProperties(userData, requiredBody);
     const userID = res.locals.jwt.user.ID;
     const pathFile = 'uploads/';
-
+    console.log('triggered');
     const newFileName = userData.ID+path.extname(req.file.originalname);
     console.log(newFileName);
     const media = new Midia({
@@ -46,7 +46,7 @@ module.exports = async function onAddMedia(req, res) {
         console.error(ex);
     }
 
-    const regex = new RegExp('^'+routesParam.id+'\\.[^ ]+$');
+    const regex = new RegExp('^'+userData.ID+'\\.[^ ]+$');
     fs.readdirSync(pathFile)
         .filter(f => regex.test(f))
         .map(f => fs.unlinkSync(pathFile + f))
