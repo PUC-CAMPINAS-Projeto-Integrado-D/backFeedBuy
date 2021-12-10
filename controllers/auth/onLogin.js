@@ -80,6 +80,12 @@ module.exports = async function onLogin(req, res) {
     mysqlDB.disconnect();
     return CoreLib.returnJSON(res, {
       token,
+      user: {
+        ID: userRow.ID,
+        Email: userRow.Email,
+        Nome: userRow.Nome,
+        Cargo: userRow.Cargo,
+      },
     }, 200);
   } catch (er) {
     mysqlDB.disconnect();
