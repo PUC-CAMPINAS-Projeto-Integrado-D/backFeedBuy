@@ -4,7 +4,7 @@ const timeout = require('connect-timeout');
 const bodyParser = require('body-parser');
 const upload = multer({ dest: 'uploads/' });
 const cors = require('cors');
-const port = 8080;
+const port = 80;
 const app = express();
 app.use(cors());
 app.options('*', cors());
